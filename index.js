@@ -1,31 +1,45 @@
-const lib = require('./lib.js')
-const express = require('express')
- console.log("hello");
+const http = require('http');
+const fs = require('fs');
+const index = fs.readFileSync('index.html','utf-8');
+const data = JSON.parse(fs.readFileSync('data.json','utf-8'));
 
-const server= express();
-server.listen(8080);
+const products= data.products;
 
-
-
-
-
-
-
-
-
-// import {sum, diff} from './lib.js';
-// const fs = require('fs');
-
-// // const txt = fs.readFileSync('demo.txt','utf-8')
-
-// fs.readFile('demo.txt','utf-8',(err ,txt)=>{
-//     console.log(txt)
-// });
-
-// // console.log(txt);
-// console.log(lib.sum(3,4),lib.diff(3,6));
-
-// const a=4;
+const server = http.createServer((req,res)=>{
+    console.log(req.url);
+    if(req.url.startsWith('/product')){
+        const id = req.url.split('/')[2]
+        const product= products.find(p=>p.id===(+id))  
+        console.log(product);
+          res.setHeader('Content-Type','text/html'); 
+            let modifiedIndex=index.replace('**title**',product.title)
+            .replace('**url**',product.thumbnail)
+            .replace('**price**',product.price)
+            .replace('**rating**',product.rating);
+            res.end(modifiedIndex);
+            return;
+    }
+    
 
 
 
+    switch(req.url){
+        case '/':
+            res.setHeader('Content-Type','text/html'); 
+            res.end(index);
+            break;
+        case '/api':
+            res.setHeader('Content-Type','application/json'); 
+            res.end(JSON.stringify(data));
+            break;
+       
+        default:
+            res.writeHead(404,'NOT FOUND');
+            res.end()
+            
+    }
+     
+   
+})
+
+server.listen(8080)   

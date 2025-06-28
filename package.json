@@ -1,19 +1,21 @@
 {
-  "name": "my-first-js",
+  "name": "node",
   "version": "1.0.0",
   "description": "",
-  "license": "ISC",
-  "author": "",
-  "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start":"nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "express": "^5.1.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/govind2160/node.git"
   },
-  "devDependencies": {
-    "nodemon": "^3.1.10"
-  }
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/govind2160/node/issues"
+  },
+  "homepage": "https://github.com/govind2160/node#readme"
 }

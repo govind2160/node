@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start":"node index.js",
+    "dev":"nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/govind2160/node/issues"
   },
-  "homepage": "https://github.com/govind2160/node#readme"
+  "homepage": "https://github.com/govind2160/node#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }

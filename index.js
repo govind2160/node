@@ -45,9 +45,10 @@ server.put('/',auth,(req,res)=>{
 server.delete('/',auth,(req,res)=>{
     res.json({type:'DELETE'})
 })
-server.patch('/',auth,(req,res)=>{
-    res.json({type:'PATCH'})
-})
+// server.patch('/',auth,(req,res)=>{
+//     res.json({type:'PATCH'})
+
+// })
 
 
 

@@ -8,25 +8,32 @@ const products= data.products;
 
 
 const express = require ('express');
+const morgan= require('morgan');
 
 const server = express(); 
 
 server.use(express.json());
-server.use((req,res,next)=>{
-    //console.log(req.method,req.ip,req.hostname,new Date(),req.get('User-Agent'))
-    next()
-})
+//server.use(express.urlencoded());
+
+server.use(morgan('default'));
+server.use(express.static('public'));
+
+// server.use((req,res,next)=>{
+//     //console.log(req.method,req.ip,req.hostname,new Date(),req.get('User-Agent'))
+//     next()
+// })
 
 const auth = ((req,res,next)=>{
     //console.log(req)
     //console.log(req.query)
-    if(req.body.password=='123'){
-         next()
-    }
-    else{ 
-        res.sendStatus(401);
+   // if(req.body.password=='123'){
+    //      next()
+    // }
+    // else{ 
+    //     res.sendStatus(401);
 
-    }
+    
+   next();
    
 })
 //server.use(auth);

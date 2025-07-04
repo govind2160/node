@@ -13,43 +13,59 @@ const morgan= require('morgan');
 const server = express(); 
 
 server.use(express.json());
-//server.use(express.urlencoded());
-
 server.use(morgan('default'));
 server.use(express.static('public'));
 
-// server.use((req,res,next)=>{
-//     //console.log(req.method,req.ip,req.hostname,new Date(),req.get('User-Agent'))
-//     next()
-// })
 
-const auth = ((req,res,next)=>{
-    //console.log(req)
-    //console.log(req.query)
-   // if(req.body.password=='123'){
-    //      next()
-    // }
-    // else{ 
-    //     res.sendStatus(401);
 
-    
-   next();
-   
-})
-//server.use(auth);
 
  
 //API - EndPoint-Route
-server.get('/',auth,(req,res)=>{
-    res.json({type:'GET'})
+
+
+
+
+
+//Create API  /products
+
+server.post('/products',(req,res)=>{
+    console.log(req.body);
+    products.push(req.body);
+    res.json(req.body) 
 })
-server.post('/',auth,(req,res)=>{
-    res.json({type:'POST'})
+
+
+//Products API READ
+server.get('/products',(req,res)=>{
+    
+    res.json(products);
 })
-server.put('/',auth,(req,res)=>{
-    res.json({type:'PUT'})
+server.get('/products/:id',(req,res)=>{
+    const id = +req.params.id;
+    const product = products.find(p => p.id === id);
+
+    res.json(product);
 })
-server.delete('/',auth,(req,res)=>{
+
+
+//Update API    PUT API
+
+
+server.put('/products/:id',(req,res)=>{
+    const id = +req.params.id;
+    const product = products.find(p => p.id === id);
+    
+
+    res.json(product);
+})
+
+
+
+
+
+
+
+server.delete('/',(req,res)=>{
     res.json({type:'DELETE'})
 })
 // server.patch('/',auth,(req,res)=>{

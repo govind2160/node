@@ -53,25 +53,41 @@ server.get('/products/:id',(req,res)=>{
 
 server.put('/products/:id',(req,res)=>{
     const id = +req.params.id;
+
     const productIndex = products.findIndex(p => p.id === id);
     products.splice(productIndex, 1, {...req.body, id:id});
     res.status(201).json();
+   
+})
+
+//Update API    PATCH API
+
+server.patch('/products/:id',(req,res)=>{
+    const id = +req.params.id;
+
+    const productIndex = products.findIndex(p => p.id === id);
+    const product = products[productIndex]
+    products.splice(productIndex, 1, {...product,...req.body});
+    res.status(201).json();
+   
 })
 
 
 
 
+// Delete API
 
+server.delete('/products/:id',(req,res)=>{
+    const id = +req.params.id;
 
-
-server.delete('/',(req,res)=>{
-    res.json({type:'DELETE'})
+    const productIndex = products.findIndex(p => p.id === id);
+    const product = products[productIndex];
+    products.splice(productIndex, 1);
+    res.status(201).json(product);
+   
 })
-// server.patch('/',auth,(req,res)=>{
-//     res.json({type:'PATCH'})
 
-// })
-
+ 
 
 
 

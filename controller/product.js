@@ -1,44 +1,49 @@
 const fs = require('fs');
-// const index = fs.readFileSync('index.html','utf-8');
-const data = JSON.parse(fs.readFileSync('data.json','utf-8'));
-const products= data.products;
+ const model = require('../model/product');
+const mongoose = require('mongoose');
+
+ const Product = model.Product; 
+
+ exports.createProduct = async (req, res) => {
+  try {
+    const product = new Product(req.body);
+    const savedProduct = await product.save(); // use await here
+    res.status(200).json(savedProduct);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to save product", details: err.message });
+  }
+};
 
 
-
-exports.createProduct=(req,res)=>{
-    console.log(req.body);
-    products.push(req.body);
-    res.json(req.body) }
-
-
-exports.getAllProduct=(req,res)=>{
-    
+exports.getAllProduct= async (req,res)=>{
+    const products= await Product.find({price: {$lt: 200}});
     res.json(products);
 }
 
-exports.readProduct=(req,res)=>{
-    const id = +req.params.id;
-    const product = products.find(p => p.id === id);
+exports.readProduct=async (req,res)=>{
+    const id = req.params.id;
+    const product = await Product.findById((id));
+
 
     res.json(product);
 }
 
-exports.replaceProduct=(req,res)=>{
-    const id = +req.params.id;
+exports.replaceProduct=async(req,res)=>{
+    const id = req.params.id;
+    const doc= await Product.findOneAndReplace({_id: id},req.body, {new: true});
 
-    const productIndex = products.findIndex(p => p.id === id);
-    products.splice(productIndex, 1, {...req.body, id:id});
-    res.status(201).json();
+
+     res.status(201).json(doc);
    
 }
 
-exports.updateProduct=(req,res)=>{
-    const id = +req.params.id;
+exports.updateProduct=async (req,res)=>{
+    const id = req.params.id;
+    const doc= await Product.findOneAndReplace({_id: id},req.body, {new: true});
 
-    const productIndex = products.findIndex(p => p.id === id);
-    const product = products[productIndex]
-    products.splice(productIndex, 1, {...product,...req.body});
-    res.status(201).json();
+
+
+     res.status(201).json(doc);
    
 }
 

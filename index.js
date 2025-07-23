@@ -1,48 +1,44 @@
-require('dotenv').config();
-const express = require ('express');
-const morgan= require('morgan');
+require('dotenv').config()
+const express = require('express');
+const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const server = express();
 const path = require('path');
+const productRouter = require('./routes/product')
+const userRouter = require('./routes/user')
+console.log('env',process.env.DB_PASSWORD)
 
-const { create } = require('domain');
-console.log('env',process.env.DB_PASSWORD);
-
-//const productController= require('./controller/product.js');
-// db connection code
+//db connection
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect(process.env.MONGO_URL.replace('<db_password>', process.env.DB_PASSWORD));
-  console.log('Connected to MongoDB');
+  await mongoose.connect(process.env.MONGO_URL);
+  console.log('database connected')
 }
-//schema
+//Schema
 
 
 
-const server = express(); 
-//const productRouter = express.Router();
-const productRouter = require('./routes/product');
-const userRouter = require('./routes/user');
 
 
 
+
+
+//bodyParser
 server.use(cors());
-
 server.use(express.json());
-server.use(morgan('combined'));
-server.use(express.static(process.env.PUBLIC_DIR));
-server.use('/products', productRouter.router);
-server.use('/users', userRouter.router);
-// server.use('*', (req, res) => {
-// res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
+server.use(morgan('default'));
+server.use(express.static(path.resolve(__dirname,process.env.PUBLIC_DIR)));
+server.use('/products',productRouter.router);
+server.use('/users',userRouter.router);
+server.use('*',(req,res)=>{
+    res.sendFile(path.resolve(__dirname,'build','index.html'))
+})
 
 
 
 
- 
- server.listen(process.env.PORT,()=>{
-    console.log('server started')
- } )
-  
+server.listen(process.env.PORT, () => {
+  console.log('server started');
+});

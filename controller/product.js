@@ -1,58 +1,64 @@
 const fs = require('fs');
- const model = require('../model/product');
+const model = require('../model/product')
 const mongoose = require('mongoose');
+const Product = model.Product;
 
- const Product = model.Product; 
+// Create
+exports.createProduct = (req, res) => {
+  const product = new Product(req.body);
+  product.save((err,doc)=>{
+    console.log({err,doc})
+    if(err){
+      res.status(400).json(err);
+    } else{
+      res.status(201).json(doc);
+    }
+  })
 
- exports.createProduct = async (req, res) => {
-  try {
-    const product = new Product(req.body);
-    const savedProduct = await product.save(); // use await here
-    res.status(200).json(savedProduct);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to save product", details: err.message });
-  }
+  
 };
 
+exports.getAllProducts = async (req, res) => {
+  const products = await Product.find();
+  res.json(products);
+};
 
-exports.getAllProduct= async (req,res)=>{
-    const products= await Product.find();
-    res.json(products);
-}
-
-exports.readProduct=async (req,res)=>{
-    const id = req.params.id;
-    const product = await Product.findById((id));
-
-
-    res.json(product);
-}
-
-exports.replaceProduct=async(req,res)=>{
-    const id = req.params.id;
-    const doc= await Product.findOneAndReplace({_id: id},req.body, {new: true});
-
-
-     res.status(201).json(doc);
-   
-}
-
-exports.updateProduct=async (req,res)=>{
-    const id = req.params.id;
-    const doc= await Product.findOneAndReplace({_id: id},req.body, {new: true});
-
-
-
-     res.status(201).json(doc);
-   
-}
-
-exports.deleteProduct=(req,res)=>{
-    const id = +req.params.id;
-
-    const productIndex = products.findIndex(p => p.id === id);
-    const product = products[productIndex];
-    products.splice(productIndex, 1);
-    res.status(201).json(product);
-   
-}
+exports.getProduct = async (req, res) => {
+  const id = req.params.id;
+  console.log({id})
+  const product = await Product.findById(id);
+  res.json(product);
+};
+exports.replaceProduct = async (req, res) => {
+  const id = req.params.id;
+  try{
+  const doc = await Product.findOneAndReplace({_id:id},req.body,{new:true})
+  res.status(201).json(doc);
+  }
+  catch(err){
+    console.log(err);
+    res.status(400).json(err);
+  }
+};
+exports.updateProduct = async (req, res) => {
+  const id = req.params.id;
+  try{
+  const doc = await Product.findOneAndUpdate({_id:id},req.body,{new:true})
+  res.status(201).json(doc);
+  }
+  catch(err){
+    console.log(err);
+    res.status(400).json(err);
+  }
+};
+exports.deleteProduct = async (req, res) => {
+  const id = req.params.id;
+  try{
+  const doc = await Product.findOneAndDelete({_id:id})
+  res.status(201).json(doc);
+  }
+  catch(err){
+    console.log(err);
+    res.status(400).json(err);
+  }
+};

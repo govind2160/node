@@ -16,7 +16,7 @@ const mongoose = require('mongoose');
 
 
 exports.getAllProduct= async (req,res)=>{
-    const products= await Product.find({price: {$lt: 200}});
+    const products= await Product.find();
     res.json(products);
 }
 

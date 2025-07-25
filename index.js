@@ -28,6 +28,7 @@ async function main() {
 //bodyParser
 server.use(cors());
 server.use(express.json());
+server.use(express.urlencoded());
 server.use(morgan('default'));
 server.use(express.static(path.resolve(__dirname,process.env.PUBLIC_DIR)));
 server.use('/products',productRouter.router);
@@ -36,7 +37,7 @@ server.use('/users',userRouter.router);
 //     res.sendFile(path.resolve(__dirname,'build','index.html'))
 // })
 
-
+//
 
 
 server.listen(process.env.PORT, () => {
